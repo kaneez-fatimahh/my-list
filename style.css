@@ -1,0 +1,46 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.container{
+    background-color: #008282;
+    color: white;
+    max-width: 600px;
+    width: 100%;
+    padding: 10px;
+    margin: 100px auto 20px!important;
+}
+#button-addon2{
+    background-color: #dad8d9;
+    color: #b5b7b495;
+    width: 100px!important;
+}
+#button-addon2:hover{
+    color: darkgray;
+} 
+.form-control{
+border-radius: none!important;
+}
+
+#list > li{
+    background-color: white;
+    height: 35px;
+    list-style: none;
+    color: #a1a5ae;
+    margin-left:-30px ;
+    padding: 4px 12px; 
+}
+#list > li:hover{
+    background-color: #888888;
+    color: white;
+  
+}
+.newclass{
+    text-decoration: line-through;
+}
+.active{
+    text-decoration: line-through!important;
+}
+.active::before{
+content :""
+}
