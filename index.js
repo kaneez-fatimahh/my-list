@@ -15,17 +15,6 @@ let dell = (e) => {
   }
 };
 
-// Save data on local storage
-function saveDataOnLocalStorage() {
-  const storedData = JSON.parse(localStorage.getItem("Data")) || [];
-  let newData = {
-    id: storedData.length,
-    liData: input.value,
-  };
-  storedData.push(newData);
-  localStorage.setItem("Data", JSON.stringify(storedData));
-}
-
 // Display data from local storage
 let displaydata = () => {
   getData = localStorage.getItem("Data");
@@ -41,37 +30,34 @@ let createListItem = (item) => {
   let newLi = document.createElement("li");
   let icon;
   newLi.onclick = function (e) {
-    console.log("hyyy hlooo");
-    let itemId = e.target.id;
+    console.log("hyy");
+    let itemId = `${newLi.id}`;
+    //let itemId = e.target.id;
     let targetElement = document.getElementById(itemId);
-    if (targetElement.classList.contains("active")) {
-      targetElement.classList.remove("active");
-      if (targetElement.contains(icon)) {
-        icon.remove();
-      }
-    
-     
-    else {
-      targetElement.classList.add("active");
-      icon = document.createElement("i");
-      icon.className = "fa fa-check";
-      targetElement.insertBefore(icon, targetElement.firstChild);
-     getData = localStorage.getItem("Data");
-      if (getData) {
-        let parseData = JSON.parse(getData);
-        let updatedData = parseData.filter((x) => x.id !== parseInt(itemId));
-        let updatedobj = {
-          id :`${targetElement}`,
-          liData :`${item.liData}`
+    console.log(itemId + "ye ha ");
+    icon = document.createElement("i");
+    icon.className = "fa fa-check";
+    targetElement.insertBefore(icon, targetElement.firstChild);
+    newLi.classList.toggle("active");
+    getData = localStorage.getItem("Data");
+    if (getData) {
+      let parseData = JSON.parse(getData);
+      let updatedData = parseData.map((x) => {
+        if (x.id === parseInt(item.id)) {
+          return {
+            id: x.id,
+            liData: x.liData,
+            incomplete: !x.incomplete,
+          };
+        } else {
+          return x;
         }
-        let newupdatedData =  updatedData.push(updatedobj)
-        localStorage.setItem("Data", JSON.stringify(newupdatedData));
-    } 
-   }
+      });
+      localStorage.setItem("Data", JSON.stringify(updatedData));
+    }
   };
-  }
   newLi.id = `${item.id}`;
-  newLi.classList.add("gray");
+  // newLi.classList.add("active");
   newLi.innerHTML = `${item.liData} <span class="float-end" onclick="dell(event)"><i class="fa-solid fa-xmark"></i></span>`;
   list.appendChild(newLi);
   console.log(item.id);
@@ -79,12 +65,20 @@ let createListItem = (item) => {
 };
 
 addButton.addEventListener("click", () => {
-  saveDataOnLocalStorage();
-  const newData = {
-    id: localStorage.getItem("Data").length,
-    liData: input.value,
-  };
-  createListItem(newData);
+  const storedData = JSON.parse(localStorage.getItem("Data")) || [];
+  const inputValue = input.value.trim().toLowerCase();
+  if (inputValue === "" || storedData.some((x) => x.liData === inputValue)) {
+    console.log("Already exists or empty input");
+  } else {
+    const newData = {
+      id: storedData.length,
+      liData: input.value,
+      incomplete: false,
+    };
+    storedData.push(newData);
+    localStorage.setItem("Data", JSON.stringify(storedData));
+    createListItem(newData);
+  }
 });
 
 displaydata();
