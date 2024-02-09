@@ -25,21 +25,31 @@ let displaydata = () => {
     });
   }
 };
-
+//create list
 let createListItem = (item) => {
   let newLi = document.createElement("li");
-  let icon;
+  let itemId = `${item.id}`;
+  newLi.id = `${item.id}`;
+  newLi.innerHTML = `<i class="fa-solid fa-check icon"></i>${item.liData} <span class="float-end" onclick="dell(event)"><i class="fa-solid fa-xmark"></i></span>`;
+  list.appendChild(newLi);
+  input.value = "";
+  const icon = newLi.querySelector(".icon");
+
+  const updateStyle = () => {
+    if (!item.incomplete) {
+      newLi.style.textDecoration = "none";
+      icon.style.display = "none";
+    } else {
+      newLi.style.textDecoration = "line-through";
+      icon.style.display = "inline-block";
+    }
+  };
+
+  updateStyle();
+
   newLi.onclick = function (e) {
-    console.log("hyy");
-    let itemId = `${newLi.id}`;
-    //let itemId = e.target.id;
-    let targetElement = document.getElementById(itemId);
-    console.log(itemId + "ye ha ");
-    icon = document.createElement("i");
-    icon.className = "fa fa-check";
-    targetElement.insertBefore(icon, targetElement.firstChild);
-    newLi.classList.toggle("active");
     getData = localStorage.getItem("Data");
+
     if (getData) {
       let parseData = JSON.parse(getData);
       let updatedData = parseData.map((x) => {
@@ -54,14 +64,10 @@ let createListItem = (item) => {
         }
       });
       localStorage.setItem("Data", JSON.stringify(updatedData));
+      item.incomplete = !item.incomplete;
+      updateStyle();
     }
   };
-  newLi.id = `${item.id}`;
-  // newLi.classList.add("active");
-  newLi.innerHTML = `${item.liData} <span class="float-end" onclick="dell(event)"><i class="fa-solid fa-xmark"></i></span>`;
-  list.appendChild(newLi);
-  console.log(item.id);
-  input.value = "";
 };
 
 addButton.addEventListener("click", () => {
