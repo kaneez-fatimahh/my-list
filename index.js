@@ -72,7 +72,7 @@ let createListItem = (item) => {
 
 addButton.addEventListener("click", () => {
   const storedData = JSON.parse(localStorage.getItem("Data")) || [];
-  const inputValue = input.value.trim().toLowerCase();
+  const inputValue = input.value;
   if (inputValue === "" || storedData.some((x) => x.liData === inputValue)) {
     console.log("Already exists or empty input");
   } else {

@@ -41,6 +41,3 @@ border-radius: none!important;
 .active{
     text-decoration: line-through!important;
 }
-.active::before{
-content :""
-}
